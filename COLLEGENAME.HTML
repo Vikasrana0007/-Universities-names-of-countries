@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="COLLEGEAPI.CSS">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"></script>
+</head>
+
+<body>
+    <header>Universities names using API</header>
+    <div>
+        <input placeholder="Enter your country">
+        <button>Search</button>
+        <ul id="list"></ul>
+    </div>
+    <style>
+        body {
+            /* background-color: rgb(212, 86, 107); */
+            font-family: 'Montserrat', sans-serif;
+        }
+
+
+
+        div {
+            height: 80%;
+            width: 80%;
+            /* border: 2px solid black; */
+            margin: 0 auto;
+            border-radius: 10px;
+            box-shadow: 7px 7px 30px goldenrod;
+            color: purple;
+            /* background-color: wheat; */
+        }
+
+        input {
+            text-align: center;
+            margin-left: 38%;
+            height: 30px;
+            width: 230px;
+            margin-top: 10px;
+            /* border-radius: 10px; */
+            /* box-shadow: 3px 3px 9px black; */
+            margin-bottom: 10px;
+
+
+        }
+
+        button {
+            border-radius: 8px;
+            background-color: aqua;
+            cursor: pointer;
+        }
+
+        header {
+            height: 50px;
+            width: 100%;
+            font-size: 30px;
+            font-weight: 300;
+        }
+    </style>
+    <script>
+
+        let url = "http://universities.hipolabs.com/search?name=";
+        let btn = document.querySelector("button");
+
+        btn.addEventListener("click", async () => {
+            let country = document.querySelector("input").value;
+            console.log(country);
+
+            let colArr = await getColleges(country);
+
+            show(colArr);
+        });
+
+        async function getColleges(country) {
+            try {
+                let res = await axios.get(url + country);
+                return res.data;
+            } catch (e) {
+                console.log("error: ", e);
+                return [];
+            }
+        }
+
+        function show(colArr) {
+
+            let list = document.querySelector("#list");
+            list.innerText = "";
+            for (col of colArr) {
+                console.log(col.name);
+                let li = document.createElement("li");
+                li.innerText = col.name;
+                list.appendChild(li);
+            }
+
+        }
+
+    </script>
+</body>
+
+</html>
